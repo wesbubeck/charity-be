@@ -43,14 +43,6 @@ app.get('/events', async (req, res) => {
 app.post('/event', async (req, res) => {
     const eventToCreate = req.body.event;
     const event = await Event.createEvent(eventToCreate);
-    const charity = await Charity.getCharityById(req.body.event.charity);
-    const charityEvents = charity.events;
-
-    charityEvents.push(eventToCreate.charity);
-
-    await Charity.updateCharityById(eventToCreate.charity, {
-        events: charityEvents,
-    });
     res.status(201).json(event.toJSON());
 });
 
