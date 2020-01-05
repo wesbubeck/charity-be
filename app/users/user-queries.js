@@ -15,7 +15,7 @@ const updateUserById = (id, update) => User.findByIdAndUpdate(id, update, {
 });
 
 const removeUserById = (id) => {
-    User.findByIdAndDelete(id);
+    User.findByIdAndDelete(id).exec();
 };
 
 module.exports = {

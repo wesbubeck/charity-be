@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Charity = require('../charity-queries');
 
 
-describe('insert', () => {
+describe('Charities', () => {
     let createdCharityOne;
     let createdCharityTwo;
     const charityDataOne = {
