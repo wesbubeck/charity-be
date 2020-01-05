@@ -1,6 +1,20 @@
 const Event = require('./event-model');
+const Charity = require('../charities/charity-queries');
 
-const createEvent = (eventDetails) => Event.create(eventDetails);
+const createEvent = async (eventDetails) => {
+    const createdEvent = await Event.create(eventDetails);
+    const charity = await Charity.getCharityById(eventDetails.charity);
+    const charityEvents = charity.events;
+
+    // eslint-disable-next-line no-underscore-dangle
+    charityEvents.push(createdEvent._id);
+
+    await Charity.updateCharityById(eventDetails.charity, {
+        events: charityEvents,
+    });
+
+    return createdEvent;
+};
 
 const getEventById = (id) => Event.findById(id)
     .lean()
