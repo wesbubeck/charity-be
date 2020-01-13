@@ -27,6 +27,12 @@ describe('Users', () => {
     });
 
     afterAll(async () => {
+        const collections = await mongoose.connection.db.collections();
+
+        collections.forEach(async (collection) => {
+            await collection.remove();
+        });
+
         await mongoose.connection.close();
     });
 

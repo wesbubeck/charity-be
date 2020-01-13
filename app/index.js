@@ -1,6 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
 const { json, urlencoded } = require('body-parser');
+const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
+const { makeExecutableSchema } = require('graphql-tools');
 const connect = require('../connect');
 
 const app = express();
@@ -8,9 +10,43 @@ const User = require('./users/user-queries');
 const Charity = require('./charities/charity-queries');
 const Event = require('./events/event-queries');
 
+// Some fake data
+const books = [
+    {
+        title: "Harry Potter and the Sorcerer's stone",
+        author: 'J.K. Rowling',
+    },
+    {
+        title: 'Jurassic Park',
+        author: 'Michael Crichton',
+    },
+];
+
+// The GraphQL schema in string form
+const typeDefs = `
+  type Query { books: [Book] }
+  type Book { title: String, author: String }
+`;
+
+// The resolvers
+const resolvers = {
+    Query: { books: () => books },
+};
+
+// Put together a schema
+const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers,
+});
+
 app.use(morgan('dev'));
 app.use(urlencoded({ extended: true }));
-app.use(json());
+
+// The GraphQL endpoint
+app.use('/graphql', json(), graphqlExpress({ schema }));
+
+// GraphiQL, a visual editor for queries
+app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 
 app.get('/charity/:id', async (req, res) => {
     const charityId = req.params.id;

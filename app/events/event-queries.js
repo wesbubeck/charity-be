@@ -28,9 +28,7 @@ const updateEventById = (id, update) => Event.findByIdAndUpdate(id, update, {
     new: true,
 }).exec();
 
-const removeEventById = (id) => {
-    Event.findByIdAndDelete(id).exec();
-};
+const removeEventById = (id) => Event.findByIdAndDelete(id).exec();
 
 module.exports = {
     createEvent,
