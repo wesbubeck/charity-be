@@ -41,9 +41,9 @@ describe('Charities', () => {
       email: charityDataOne.email
     });
 
-    expect(createdCharityOne.charityName).toBe(charityDataOne.charityName);
-    expect(createdCharityOne.email).toBe(charityDataOne.email);
-    expect(createdCharityOne.address).toBe(charityDataOne.address);
+    expect(createdCharityOne.charityName).toEqual(charityDataOne.charityName);
+    expect(createdCharityOne.email).toEqual(charityDataOne.email);
+    expect(createdCharityOne.address).toEqual(charityDataOne.address);
   });
 
   test('should create another new charity', async () => {
@@ -53,17 +53,17 @@ describe('Charities', () => {
       email: charityDataTwo.email
     });
 
-    expect(createdCharityTwo.charityName).toBe(charityDataTwo.charityName);
-    expect(createdCharityTwo.email).toBe(charityDataTwo.email);
-    expect(createdCharityTwo.address).toBe(charityDataTwo.address);
+    expect(createdCharityTwo.charityName).toEqual(charityDataTwo.charityName);
+    expect(createdCharityTwo.email).toEqual(charityDataTwo.email);
+    expect(createdCharityTwo.address).toEqual(charityDataTwo.address);
   });
 
   test('should get a charity by id', async () => {
     const getCharityTwo = await Charity.getCharityById(createdCharityTwo._id);
 
-    expect(getCharityTwo.charityName).toBe(charityDataTwo.charityName);
-    expect(getCharityTwo.email).toBe(charityDataTwo.email);
-    expect(getCharityTwo.address).toBe(charityDataTwo.address);
+    expect(getCharityTwo.charityName).toEqual(charityDataTwo.charityName);
+    expect(getCharityTwo.email).toEqual(charityDataTwo.email);
+    expect(getCharityTwo.address).toEqual(charityDataTwo.address);
   });
 
   test('should get all charities', async () => {
@@ -84,9 +84,9 @@ describe('Charities', () => {
       }
     );
 
-    expect(updatedCharityTwo.charityName).toBe(charityDataTwo.charityName);
-    expect(updatedCharityTwo.email).toBe('new.email@test.com');
-    expect(updatedCharityTwo.address).toBe(charityDataTwo.address);
+    expect(updatedCharityTwo.charityName).toEqual(charityDataTwo.charityName);
+    expect(updatedCharityTwo.email).toEqual('new.email@test.com');
+    expect(updatedCharityTwo.address).toEqual(charityDataTwo.address);
   });
 
   test('should delete a charity by id', async () => {
