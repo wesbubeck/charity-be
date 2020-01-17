@@ -9,6 +9,7 @@
   "scripts": {
     "start": "nodemon app/index.js --exec babel-node --presets babel-preset-env",
     "test": "jest",
+    "test:watch": "jest --watch --coverageReporters='json'",
     "lint": "eslint app --ext .js",
     "lint:fix": "npm run lint -- --fix"
   },
