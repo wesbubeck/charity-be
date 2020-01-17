@@ -39,20 +39,24 @@ const resolvers = {
 
 
 const start = async () => {
+    /* eslint no-console: ["error", { allow: ["log", "error"] }] */
     // The ApolloServer constructor requires two parameters: your schema
     // definition and your set of resolvers.
     const server = new ApolloServer({ typeDefs, resolvers });
-    await connect('mongodb://localhost:27017/soulFoodDB');
 
-    const { url } = await server.listen({ port: 4040 });
-    console.log(`GQL server ready at ${url}`);
+    try {
+        await connect('mongodb://localhost:27017/soulFoodDB');
+        console.log('connected to the db')
+    } catch (error) {
+        console.error(`Server error ${error}`);
+    }
+
+    try {
+        const { url } = await server.listen({ port: 4040 });
+        console.log(`🚀 GQL server ready at ${url}`);
+    } catch (error) {
+        console.error(`Server error ${error}`);
+    }
 };
 
 export { start as default };
-
-// connect('mongodb://localhost:27017/soulFoodDB')
-//     .then(() => app.listen(4040, () => {
-//         /* eslint-disable no-console */
-//         console.log('server on http://localhost:4040');
-//     }))
-//     .catch((e) => console.error(e));
