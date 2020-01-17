@@ -46,7 +46,7 @@ const start = async () => {
 
     try {
         await connect('mongodb://localhost:27017/soulFoodDB');
-        console.log('connected to the db')
+        console.log('connected to the db');
     } catch (error) {
         console.error(`Server error ${error}`);
     }
