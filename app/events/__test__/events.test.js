@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-
+// adding a comment
 const mongoose = require('mongoose');
 const Event = require('../event-queries');
 const Charity = require('../../charities/charity-queries');
