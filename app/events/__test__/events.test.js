@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const Event = require('../event-queries');
 const Charity = require('../../charities/charity-queries');
 
-
 describe('Events', () => {
     let createdEventOne;
     let createdEventTwo;
@@ -24,7 +23,6 @@ describe('Events', () => {
         eventDetails: 'This is an art show for the peeps',
         charity: null,
         eventEmail: 'pamelamadingdong@dunder.com2',
-
     };
 
     beforeAll(async () => {
@@ -104,11 +102,9 @@ describe('Events', () => {
     test('charity should contain a ref to the events it is mapped to', async () => {
         const charityWithEvent = await Charity.getCharityById(createdCharity._id);
 
-        expect(charityWithEvent.events)
-            .toEqual(expect.arrayContaining([
-                createdEventTwo._id,
-                createdEventOne._id,
-            ]));
+        expect(charityWithEvent.events).toEqual(
+            expect.arrayContaining([createdEventTwo._id, createdEventOne._id]),
+        );
     });
 
     test('should get all events', async () => {
@@ -116,11 +112,9 @@ describe('Events', () => {
         const eventIds = allEvents.map((event) => event._id);
 
         expect(allEvents).toHaveLength(2);
-        expect(eventIds)
-            .toEqual(expect.arrayContaining([
-                createdEventTwo._id,
-                createdEventOne._id,
-            ]));
+        expect(eventIds).toEqual(
+            expect.arrayContaining([createdEventTwo._id, createdEventOne._id]),
+        );
     });
 
     test('should update a event by id', async () => {
@@ -142,8 +136,11 @@ describe('Events', () => {
         const eventIdsAfterDelete = allEventsAfterDelete.map((event) => event._id);
 
         expect(allEventsAfterDelete).toHaveLength(1);
-        expect(eventIdsAfterDelete)
-            .not.toEqual(expect.arrayContaining([createdEventTwo._id, createdEventOne._id]));
-        expect(eventIdsAfterDelete).toEqual(expect.arrayContaining([createdEventOne._id]));
+        expect(eventIdsAfterDelete).not.toEqual(
+            expect.arrayContaining([createdEventTwo._id, createdEventOne._id]),
+        );
+        expect(eventIdsAfterDelete).toEqual(
+            expect.arrayContaining([createdEventOne._id]),
+        );
     });
 });

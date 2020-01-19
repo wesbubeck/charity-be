@@ -3,7 +3,6 @@
 const mongoose = require('mongoose');
 const User = require('../user-queries');
 
-
 describe('Users', () => {
     let createdUserOne;
     let createdUserTwo;
@@ -16,7 +15,6 @@ describe('Users', () => {
         firstName: 'Pam',
         lastName: 'Beasley',
         email: 'pamelamadingdong@dunder.com2',
-
     };
 
     beforeAll(async () => {
@@ -43,9 +41,9 @@ describe('Users', () => {
             email: userDataOne.email,
         });
 
-        expect(createdUserOne.firstName).toBe(userDataOne.firstName);
-        expect(createdUserOne.email).toBe(userDataOne.email);
-        expect(createdUserOne.lastName).toBe(userDataOne.lastName);
+        expect(createdUserOne.firstName).toEqual(userDataOne.firstName);
+        expect(createdUserOne.email).toEqual(userDataOne.email);
+        expect(createdUserOne.lastName).toEqual(userDataOne.lastName);
     });
 
     test('should create another new user', async () => {
@@ -55,17 +53,17 @@ describe('Users', () => {
             email: userDataTwo.email,
         });
 
-        expect(createdUserTwo.firstName).toBe(userDataTwo.firstName);
-        expect(createdUserTwo.email).toBe(userDataTwo.email);
-        expect(createdUserTwo.lastName).toBe(userDataTwo.lastName);
+        expect(createdUserTwo.firstName).toEqual(userDataTwo.firstName);
+        expect(createdUserTwo.email).toEqual(userDataTwo.email);
+        expect(createdUserTwo.lastName).toEqual(userDataTwo.lastName);
     });
 
     test('should get a user by id', async () => {
         const getUserTwo = await User.getUserById(createdUserTwo._id);
 
-        expect(getUserTwo.firstName).toBe(userDataTwo.firstName);
-        expect(getUserTwo.email).toBe(userDataTwo.email);
-        expect(getUserTwo.lastName).toBe(userDataTwo.lastName);
+        expect(getUserTwo.firstName).toEqual(userDataTwo.firstName);
+        expect(getUserTwo.email).toEqual(userDataTwo.email);
+        expect(getUserTwo.lastName).toEqual(userDataTwo.lastName);
     });
 
     test('should get all users', async () => {
@@ -73,8 +71,9 @@ describe('Users', () => {
         const userIds = allUsers.map((user) => user._id);
 
         expect(allUsers).toHaveLength(2);
-        expect(userIds)
-            .toEqual(expect.arrayContaining([createdUserTwo._id, createdUserOne._id]));
+        expect(userIds).toEqual(
+            expect.arrayContaining([createdUserTwo._id, createdUserOne._id]),
+        );
     });
 
     test('should update a user by id', async () => {
@@ -82,9 +81,9 @@ describe('Users', () => {
             email: 'new.email@test.com',
         });
 
-        expect(updatedUserTwo.firstName).toBe(userDataTwo.firstName);
-        expect(updatedUserTwo.email).toBe('new.email@test.com');
-        expect(updatedUserTwo.lastName).toBe(userDataTwo.lastName);
+        expect(updatedUserTwo.firstName).toEqual(userDataTwo.firstName);
+        expect(updatedUserTwo.email).toEqual('new.email@test.com');
+        expect(updatedUserTwo.lastName).toEqual(userDataTwo.lastName);
     });
 
     test('should delete a user by id', async () => {
@@ -93,8 +92,11 @@ describe('Users', () => {
         const userIdsAfterDelete = allUsersAfterDelete.map((user) => user._id);
 
         expect(allUsersAfterDelete).toHaveLength(1);
-        expect(userIdsAfterDelete)
-            .not.toEqual(expect.arrayContaining([createdUserTwo._id, createdUserOne._id]));
-        expect(userIdsAfterDelete).toEqual(expect.arrayContaining([createdUserOne._id]));
+        expect(userIdsAfterDelete).not.toEqual(
+            expect.arrayContaining([createdUserTwo._id, createdUserOne._id]),
+        );
+        expect(userIdsAfterDelete).toEqual(
+            expect.arrayContaining([createdUserOne._id]),
+        );
     });
 });
