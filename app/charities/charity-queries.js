@@ -14,9 +14,7 @@ const updateCharityById = (id, update) => Charity.findByIdAndUpdate(id, update, 
     new: true,
 }).exec();
 
-const removeCharityById = (id) => {
-    Charity.findByIdAndDelete(id).exec();
-};
+const removeCharityById = (id) => Charity.findByIdAndDelete(id).exec();
 
 module.exports = {
     createCharity,

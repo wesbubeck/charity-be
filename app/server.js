@@ -7,6 +7,12 @@ const eventApi = require('./events/event-queries');
 const charityApi = require('./charities/charity-queries');
 const userApi = require('./users/user-queries');
 
+const dataSources = () => ({
+    eventApi,
+    charityApi,
+    userApi,
+});
+
 const start = async () => {
     /* eslint no-console: ["error", { allow: ["log", "error"] }] */
     // The ApolloServer constructor requires two parameters: your schema
@@ -14,13 +20,7 @@ const start = async () => {
     const server = new ApolloServer({
         typeDefs,
         resolvers,
-        context() {
-            return {
-                eventApi,
-                charityApi,
-                userApi,
-            };
-        },
+        dataSources,
     });
 
     try {
