@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 const {
     Query,
-    Mutation
+    Mutation,
 } = require('../resolvers');
 
 const mockEvents = [
@@ -95,8 +95,8 @@ const mockDataSources = {
 describe('Queries', () => {
     describe('event', () => {
         it('should get event by id', () => {
-            const eventById = Query.event(null, { id: '123abcLRB' }, mockDataSources);
-            const mockEvent = mockEvents.find((event) => event._id === '123abcLRB');
+            const eventById = Query.event(null, { id: '123abcWTB' }, mockDataSources);
+            const mockEvent = mockEvents.find((event) => event._id === '123abcWTB');
             expect(eventById).toEqual(mockEvent);
         });
     });
@@ -127,7 +127,117 @@ describe('Queries', () => {
         });
     });
     describe('charities', () => {
-        const allCharities = Query.charities(null, null, mockDataSources);
-        expect(allCharities).toEqual(mockCharities);
+        it('should get all charities', () => {
+            const allCharities = Query.charities(null, null, mockDataSources);
+            expect(allCharities).toEqual(mockCharities);
+        });
+    });
+});
+
+describe('Mutations', () => {
+    describe('createEvent', () => {
+        it('should create an event', () => {
+            const createdEvent = Mutation.createEvent(
+                null,
+                { input: mockEvents[0] },
+                mockDataSources,
+            );
+            expect(createdEvent).toEqual(mockEvents[0]);
+        });
+    });
+    describe('updateEvent', () => {
+        it('should update and event', () => {
+            const update = { eventDetails: 'Updated: We are flying kites rain or shine' };
+            const updatedEvent = Mutation.updateEvent(
+                null,
+                { input: update, id: mockEvents[0]._id },
+                mockDataSources,
+            );
+            const mockEventUpdated = mockEvents.find((event) => event._id === mockEvents[0]._id);
+
+            expect(updatedEvent.eventDetails).toEqual(update.eventDetails);
+            expect(updatedEvent).toEqual(mockEventUpdated);
+        });
+    });
+    describe('deleteEvent', () => {
+        it('should delete an event', () => {
+            const deletedEvent = Mutation.deleteEvent(
+                null,
+                { id: mockEvents[0]._id },
+                mockDataSources,
+            );
+            const mockDeletedEvent = mockEvents.find((event) => event._id === mockEvents[0]._id);
+            expect(mockDeletedEvent).toEqual(deletedEvent);
+        });
+    });
+    describe('createUser', () => {
+        it('should create an user', () => {
+            const createdUser = Mutation.createUser(null, { input: mockUsers[0] }, mockDataSources);
+            expect(createdUser).toEqual(mockUsers[0]);
+        });
+    });
+    describe('updateUser', () => {
+        it('should update an user', () => {
+            const update = { firstName: 'Updated: Lenny' };
+            const updatedUser = Mutation.updateUser(
+                null,
+                { input: update, id: mockUsers[0]._id },
+                mockDataSources,
+            );
+            const mockUserUpdated = mockUsers.find((user) => user._id === mockUsers[0]._id);
+
+            expect(updatedUser.firstName).toEqual(update.firstName);
+            expect(updatedUser).toEqual(mockUserUpdated);
+        });
+    });
+    describe('deleteUser', () => {
+        it('Should update an user', () => {
+            const deletedUser = Mutation.deleteUser(
+                null,
+                { id: mockUsers[0]._id },
+                mockDataSources,
+            );
+            const mockDeletedUser = mockUsers.find((event) => event._id === mockUsers[0]._id);
+            expect(mockDeletedUser).toEqual(deletedUser);
+        });
+    });
+    describe('createCharity', () => {
+        it('should create a charity', () => {
+            const createdCharity = Mutation.createCharity(
+                null,
+                { input: mockCharities[0] },
+                mockDataSources,
+            );
+            expect(createdCharity).toEqual(mockCharities[0]);
+        });
+    });
+    describe('updateCharity', () => {
+        it('should update a charity', () => {
+            const update = { charityName: 'Updated: Charity 1' };
+            const updatedCharity = Mutation.updateCharity(
+                null,
+                { input: update, id: mockCharities[0]._id },
+                mockDataSources,
+            );
+            const mockCharityUpdated = mockCharities.find(
+                (user) => user._id === mockCharities[0]._id,
+            );
+
+            expect(updatedCharity.charityName).toEqual(update.charityName);
+            expect(updatedCharity).toEqual(mockCharityUpdated);
+        });
+    });
+    describe('deleteCharity', () => {
+        it('should delete a charity', () => {
+            const deletedCharity = Mutation.deleteCharity(
+                null,
+                { id: mockCharities[0]._id },
+                mockDataSources,
+            );
+            const mockDeletedCharity = mockCharities.find(
+                (event) => event._id === mockCharities[0]._id,
+            );
+            expect(mockDeletedCharity).toEqual(deletedCharity);
+        });
     });
 });
