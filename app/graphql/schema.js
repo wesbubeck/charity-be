@@ -5,7 +5,7 @@ const { gql } = require('apollo-server');
 const typeDefs = gql`
     type Event {
         _id: ID!
-        dateOfEvent: Int!
+        dateOfEvent: String!
         eventContact: String!
         address: String!
         eventEmail: String!
