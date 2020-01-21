@@ -8,8 +8,8 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon app/index.js --exec babel-node --presets babel-preset-env",
-    "test": "jest --runInBand",
-    "test:watch": "jest --watch --coverageReporters='json'",
+    "test": "jest --coverage --runInBand",
+    "test:watch": "jest --watch --coverage",
     "lint": "eslint app --ext .js",
     "lint:fix": "npm run lint -- --fix"
   },
