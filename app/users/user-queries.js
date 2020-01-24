@@ -40,15 +40,15 @@ const updateUserById = async (id, update) => {
     || _.get(update, 'eventsAttended', []).length > 0
     || _.get(update, 'charitiesFavorited', []).length > 0
     ) {
-        const updateObj = { ...update };
-        delete updateObj.eventsAttended;
-        delete updateObj.eventsFavorited;
-        delete updateObj.charitiesFavorited;
+        const updatedCopy = { ...update };
+        delete updatedCopy.eventsAttended;
+        delete updatedCopy.eventsFavorited;
+        delete updatedCopy.charitiesFavorited;
 
         updatedUser = await User.findByIdAndUpdate(
             { _id: id },
             {
-                $set: updateObj,
+                $set: updatedCopy,
                 $push: getPushValues(
                     update.eventsAttended,
                     update.eventsFavorited,
