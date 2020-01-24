@@ -22,10 +22,6 @@ const userSchema = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'event',
     },
-    eventsSaved: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'event',
-    },
     charitiesFavorited: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'charity',

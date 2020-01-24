@@ -24,6 +24,9 @@ const typeDefs = gql`
         firstName: String!
         lastName: String!
         email: String!
+        eventsAttended: [ID]
+        eventsFavorited: [ID]
+        charitiesFavorited: [ID]
     }
     input NewEventInput {
         dateOfEvent: String!
@@ -50,6 +53,9 @@ const typeDefs = gql`
         firstName: String
         lastName: String
         email: String
+        eventsAttended: [ID]
+        eventsFavorited: [ID]
+        charitiesFavorited: [ID]
     }
     input NewCharityInput {
         charityName: String!

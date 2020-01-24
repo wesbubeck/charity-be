@@ -1,25 +1,81 @@
 const User = require('./user-model');
+const _ = require('lodash');
+const createUser = userDetails => User.create(userDetails);
 
-const createUser = (userDetails) => User.create(userDetails);
-
-const getUserById = (id) => User.findById(id)
+const getUserById = id =>
+  User.findById(id)
     .lean()
     .exec();
 
-const getAllUsers = () => User.find({})
+const getAllUsers = () =>
+  User.find({})
     .lean()
     .exec();
 
-const updateUserById = (id, update) => User.findByIdAndUpdate(id, update, {
-    new: true,
-});
+const getPushValues = (eventsAttended, eventsFavorited, charitiesFavorited) => {
+  return {
+    eventsAttended:
+      eventsAttended.length > 0
+        ? {
+            $each: [...eventsAttended]
+          }
+        : null,
+    eventsFavorited:
+      eventsFavorited.length > 0
+        ? {
+            $each: [...eventsFavorited]
+          }
+        : null,
+    charitiesFavorited:
+      charitiesFavorited.length > 0
+        ? {
+            $each: [...charitiesFavorited]
+          }
+        : null
+  };
+};
 
-const removeUserById = (id) => User.findByIdAndDelete(id).exec();
+const updateUserById = async (id, update) => {
+  let updatedUser = {};
+
+  if (
+    _.get(update, 'eventsFavorited', []).length > 0 ||
+    _.get(update, 'eventsAttended', []).length > 0 ||
+    _.get(update, 'charitiesFavorited', []).length > 0
+  ) {
+    const updateObj = Object.assign({}, update);
+    delete updateObj.eventsAttended;
+    delete updateObj.eventsFavorited;
+    delete updateObj.charitiesFavorited;
+
+    updatedUser = await User.findByIdAndUpdate(
+      { _id: id },
+      {
+        $set: updateObj,
+        $push: getPushValues(update.eventsAttended, update.eventsFavorited, update.charitiesFavorited)
+      },
+      {
+        new: true
+      }
+    );
+
+    return updatedUser;
+  }
+
+  updatedUser = User.findByIdAndUpdate(id, update, {
+    new: true
+  });
+
+  return updatedUser;
+};
+
+const removeUserById = id => User.findByIdAndDelete(id).exec();
 
 module.exports = {
-    createUser,
-    getUserById,
-    updateUserById,
-    removeUserById,
-    getAllUsers,
+  createUser,
+  getUserById,
+  updateUserById,
+  removeUserById,
+  getAllUsers,
+  getPushValues
 };
