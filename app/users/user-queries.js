@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const User = require('./user-model');
 
 const createUser = (userDetails) => User.create(userDetails);
@@ -10,9 +11,64 @@ const getAllUsers = () => User.find({})
     .lean()
     .exec();
 
-const updateUserById = (id, update) => User.findByIdAndUpdate(id, update, {
-    new: true,
+const getPushValues = (eventsAttended, eventsFavorited, charitiesFavorited) => ({
+    eventsAttended:
+      eventsAttended.length > 0
+          ? {
+              $each: [...eventsAttended],
+          }
+          : null,
+    eventsFavorited:
+      eventsFavorited.length > 0
+          ? {
+              $each: [...eventsFavorited],
+          }
+          : null,
+    charitiesFavorited:
+      charitiesFavorited.length > 0
+          ? {
+              $each: [...charitiesFavorited],
+          }
+          : null,
 });
+
+const updateUserById = async (id, update) => {
+    let updatedUser = {};
+
+    if (
+        _.get(update, 'eventsFavorited', []).length > 0
+    || _.get(update, 'eventsAttended', []).length > 0
+    || _.get(update, 'charitiesFavorited', []).length > 0
+    ) {
+        const updatedCopy = { ...update };
+        delete updatedCopy.eventsAttended;
+        delete updatedCopy.eventsFavorited;
+        delete updatedCopy.charitiesFavorited;
+
+        updatedUser = await User.findByIdAndUpdate(
+            { _id: id },
+            {
+                $set: updatedCopy,
+                $push: getPushValues(
+                    update.eventsAttended,
+                    update.eventsFavorited,
+                    update.charitiesFavorited,
+                ),
+            },
+            {
+                new: true,
+            },
+        );
+
+        return updatedUser;
+    }
+
+    updatedUser = User.findByIdAndUpdate(id, update, {
+        new: true,
+    });
+
+    return updatedUser;
+};
 
 const removeUserById = (id) => User.findByIdAndDelete(id).exec();
 
@@ -22,4 +78,5 @@ module.exports = {
     updateUserById,
     removeUserById,
     getAllUsers,
+    getPushValues,
 };
