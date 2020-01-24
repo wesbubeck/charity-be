@@ -1,81 +1,82 @@
-const User = require('./user-model');
 const _ = require('lodash');
-const createUser = userDetails => User.create(userDetails);
+const User = require('./user-model');
 
-const getUserById = id =>
-  User.findById(id)
+const createUser = (userDetails) => User.create(userDetails);
+
+const getUserById = (id) => User.findById(id)
     .lean()
     .exec();
 
-const getAllUsers = () =>
-  User.find({})
+const getAllUsers = () => User.find({})
     .lean()
     .exec();
 
-const getPushValues = (eventsAttended, eventsFavorited, charitiesFavorited) => {
-  return {
+const getPushValues = (eventsAttended, eventsFavorited, charitiesFavorited) => ({
     eventsAttended:
       eventsAttended.length > 0
-        ? {
-            $each: [...eventsAttended]
+          ? {
+              $each: [...eventsAttended],
           }
-        : null,
+          : null,
     eventsFavorited:
       eventsFavorited.length > 0
-        ? {
-            $each: [...eventsFavorited]
+          ? {
+              $each: [...eventsFavorited],
           }
-        : null,
+          : null,
     charitiesFavorited:
       charitiesFavorited.length > 0
-        ? {
-            $each: [...charitiesFavorited]
+          ? {
+              $each: [...charitiesFavorited],
           }
-        : null
-  };
-};
+          : null,
+});
 
 const updateUserById = async (id, update) => {
-  let updatedUser = {};
+    let updatedUser = {};
 
-  if (
-    _.get(update, 'eventsFavorited', []).length > 0 ||
-    _.get(update, 'eventsAttended', []).length > 0 ||
-    _.get(update, 'charitiesFavorited', []).length > 0
-  ) {
-    const updateObj = Object.assign({}, update);
-    delete updateObj.eventsAttended;
-    delete updateObj.eventsFavorited;
-    delete updateObj.charitiesFavorited;
+    if (
+        _.get(update, 'eventsFavorited', []).length > 0
+    || _.get(update, 'eventsAttended', []).length > 0
+    || _.get(update, 'charitiesFavorited', []).length > 0
+    ) {
+        const updateObj = { ...update };
+        delete updateObj.eventsAttended;
+        delete updateObj.eventsFavorited;
+        delete updateObj.charitiesFavorited;
 
-    updatedUser = await User.findByIdAndUpdate(
-      { _id: id },
-      {
-        $set: updateObj,
-        $push: getPushValues(update.eventsAttended, update.eventsFavorited, update.charitiesFavorited)
-      },
-      {
-        new: true
-      }
-    );
+        updatedUser = await User.findByIdAndUpdate(
+            { _id: id },
+            {
+                $set: updateObj,
+                $push: getPushValues(
+                    update.eventsAttended,
+                    update.eventsFavorited,
+                    update.charitiesFavorited,
+                ),
+            },
+            {
+                new: true,
+            },
+        );
+
+        return updatedUser;
+    }
+
+    updatedUser = User.findByIdAndUpdate(id, update, {
+        new: true,
+    });
 
     return updatedUser;
-  }
-
-  updatedUser = User.findByIdAndUpdate(id, update, {
-    new: true
-  });
-
-  return updatedUser;
 };
 
-const removeUserById = id => User.findByIdAndDelete(id).exec();
+const removeUserById = (id) => User.findByIdAndDelete(id).exec();
 
 module.exports = {
-  createUser,
-  getUserById,
-  updateUserById,
-  removeUserById,
-  getAllUsers,
-  getPushValues
+    createUser,
+    getUserById,
+    updateUserById,
+    removeUserById,
+    getAllUsers,
+    getPushValues,
 };
