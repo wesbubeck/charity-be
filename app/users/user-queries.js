@@ -13,15 +13,12 @@ const getAllUsers = () => User.find({})
 
 const getPushValues = (eventsAttendedValue, eventsFavoritedValue, charitiesFavoritedValue) => {
     const pushValue = {};
-    if (eventsAttendedValue.length > 0) {
-        pushValue.eventsAttended = eventsAttendedValue;
-    }
-    if (eventsFavoritedValue.length > 0) {
-        pushValue.eventsFavorited = eventsFavoritedValue;
-    }
-    if (charitiesFavoritedValue.length > 0) {
-        pushValue.charitiesFavorited = charitiesFavoritedValue;
-    }
+    if (eventsAttendedValue.length > 0) pushValue.eventsAttended = eventsAttendedValue;
+
+    if (eventsFavoritedValue.length > 0) pushValue.eventsFavorited = eventsFavoritedValue;
+
+    if (charitiesFavoritedValue.length > 0) pushValue.charitiesFavorited = charitiesFavoritedValue;
+
     return pushValue;
 };
 
