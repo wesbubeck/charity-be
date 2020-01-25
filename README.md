@@ -16,10 +16,10 @@ This app will give volunteers the ability to search local charities and events. 
 Use the package manager [npm](https://www.npmjs.com/) to install charity-be.
 
 ```bash
-npm install charity-be
+npm install
 ```
 
-### Linting: Uses eslint with modified Airbnb rules:
+## Linting: Uses eslint with modified Airbnb rules:
 
 To run lint in terminal run
 
@@ -31,12 +31,6 @@ to run lint and auto fix in terminal run
 
 ```bash
 npm run lint:fix
-```
-
-## Usage
-
-```javascript
-import charity-be
 ```
 
 ## Development Branches
@@ -74,7 +68,7 @@ Pull request: For pull request to merge all unit test need to pass and eslint pa
 closing issues keywords
 ```
 
-Get more help here [Git help](https://help.github.com/en/github/managing-your-work-on-github/closing-issues-using-keywords)
+Get more help here [Closing issues keywords](https://help.github.com/en/github/managing-your-work-on-github/closing-issues-using-keywords)
 
 ## License
 
