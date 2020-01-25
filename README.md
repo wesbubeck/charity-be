@@ -9,28 +9,51 @@ Back End for my charity app
 
 ## Description
 
-We need a description of the project here.
+This app will give volunteers the ability to search local charities and events. Volunteers will be able to favorite charities and view attended request. Charities will be able to manage volunteers data and event data.
 
 ## Installation
 
 Use the package manager [npm](https://www.npmjs.com/) to install charity-be.
 
 ```bash
-npm install charity-be
+npm install
 ```
 
-### To run EsLint type in the command:
+## Linting: Uses eslint with modified Airbnb rules:
+
+To run lint in terminal run
 
 ```bash
 npm run lint
 ```
 
-## Usage
+to run lint and auto fix in terminal run
 
-```javascript
-import charity-be
+```bash
+npm run lint:fix
+```
 
-We can put install instructions here.
+## Development Branches
+
+Branches should be based off master and name convention is -issue- for example John Doe's branch for issue number 20 would be
+
+```bash
+jd-issue-20
+```
+
+## Testing
+
+Unit test are in Jest . Mongoose test use jest-mongodb which is mongo in memory. [Download location](https://github.com/shelfio/jest-mongodb)
+to run test in terminal run
+
+```bash
+npm run test
+```
+
+To run test in watch mode type
+
+```bash
+npm run test:watch
 ```
 
 ## Contributing
@@ -38,6 +61,14 @@ We can put install instructions here.
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
+
+Pull request: For pull request to merge all unit test need to pass and eslint pass, Github Actions run these on a push. You will need at least 1 reviewer on a PR to sign off for it to merge. If you have more than several commits please squash them before merging in case they need to be reverted. In the comments of your pr please include
+
+```bash
+closing issues keywords
+```
+
+Get more help here [Closing issues keywords](https://help.github.com/en/github/managing-your-work-on-github/closing-issues-using-keywords)
 
 ## License
 
