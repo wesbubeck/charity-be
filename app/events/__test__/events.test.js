@@ -98,6 +98,27 @@ describe('Events', () => {
         expect(getEventTwo.charity).toEqual(eventDataTwo.charity);
         expect(getEventTwo.eventDetails).toEqual(eventDataTwo.eventDetails);
     });
+    test('should get many events by id', async () => {
+        const manyEvents = await Event.getManyEventsById(
+            [
+                createdEventTwo._id,
+                createdEventOne._id,
+            ],
+        );
+
+        manyEvents.forEach((event) => {
+            const createdEvents = [createdEventOne, createdEventTwo];
+            const eventMatch = createdEvents.find(
+                (createdEvent) => createdEvent._id.equals(event._id),
+            );
+
+            expect(eventMatch.address).toEqual(event.address);
+            expect(eventMatch.eventEmail).toEqual(event.eventEmail);
+            expect(eventMatch.eventDetails).toEqual(event.eventDetails);
+            expect(eventMatch.eventContact).toEqual(event.eventContact);
+        });
+        expect(manyEvents).toHaveLength(2);
+    });
 
     test('charity should contain a ref to the events it is mapped to', async () => {
         const charityWithEvent = await Charity.getCharityById(createdCharity._id);

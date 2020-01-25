@@ -20,6 +20,10 @@ const getEventById = (id) => Event.findById(id)
     .lean()
     .exec();
 
+const getManyEventsById = (ids) => Event.find({ _id: { $in: ids } })
+    .lean()
+    .exec();
+
 const getAllEvents = () => Event.find({})
     .lean()
     .exec();
@@ -33,6 +37,7 @@ const removeEventById = (id) => Event.findByIdAndDelete(id).exec();
 module.exports = {
     createEvent,
     getEventById,
+    getManyEventsById,
     updateEventById,
     removeEventById,
     getAllEvents,
