@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const { get } = require('lodash');
 const User = require('./user-model');
 
 const createUser = (userDetails) => User.create(userDetails);
@@ -11,34 +11,30 @@ const getAllUsers = () => User.find({})
     .lean()
     .exec();
 
-const getPushValues = (eventsAttended, eventsFavorited, charitiesFavorited) => ({
-    eventsAttended:
-      eventsAttended.length > 0
-          ? {
-              $each: [...eventsAttended],
-          }
-          : null,
-    eventsFavorited:
-      eventsFavorited.length > 0
-          ? {
-              $each: [...eventsFavorited],
-          }
-          : null,
-    charitiesFavorited:
-      charitiesFavorited.length > 0
-          ? {
-              $each: [...charitiesFavorited],
-          }
-          : null,
-});
+const getPushValues = (eventsAttendedValue, eventsFavoritedValue, charitiesFavoritedValue) => {
+    const pushValue = {};
+    if (eventsAttendedValue.length > 0) {
+        pushValue.eventsAttended = eventsAttendedValue;
+    }
+    if (eventsFavoritedValue.length > 0) {
+        pushValue.eventsFavorited = eventsFavoritedValue;
+    }
+    if (charitiesFavoritedValue.length > 0) {
+        pushValue.charitiesFavorited = charitiesFavoritedValue;
+    }
+    return pushValue;
+};
 
 const updateUserById = async (id, update) => {
-    let updatedUser = {};
+    let updatedUser;
+    const eventsAttendedCopy = get(update, 'eventsAttended', []);
+    const eventsFavoritedCopy = get(update, 'eventsFavorited', []);
+    const charitiesFavoritedCopy = get(update, 'charitiesFavorited', []);
 
     if (
-        _.get(update, 'eventsFavorited', []).length > 0
-    || _.get(update, 'eventsAttended', []).length > 0
-    || _.get(update, 'charitiesFavorited', []).length > 0
+        eventsAttendedCopy.length > 0
+        || eventsFavoritedCopy.length > 0
+        || charitiesFavoritedCopy.length > 0
     ) {
         const updatedCopy = { ...update };
         delete updatedCopy.eventsAttended;
@@ -49,10 +45,10 @@ const updateUserById = async (id, update) => {
             { _id: id },
             {
                 $set: updatedCopy,
-                $push: getPushValues(
-                    update.eventsAttended,
-                    update.eventsFavorited,
-                    update.charitiesFavorited,
+                $addToSet: getPushValues(
+                    eventsAttendedCopy,
+                    eventsFavoritedCopy,
+                    charitiesFavoritedCopy,
                 ),
             },
             {
