@@ -13,6 +13,10 @@
     "lint": "eslint app --ext .js",
     "lint:fix": "npm run lint -- --fix"
   },
+  "babel": {
+      "presets": [],
+      "plugins": [["transform-object-rest-spread", { "useBuiltIns": true }]]
+  },
   "dependencies": {
     "apollo-server": "^2.9.16",
     "graphql": "^14.5.8",
@@ -24,6 +28,7 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.6",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
