@@ -25,6 +25,15 @@ describe('Events', () => {
         eventEmail: 'pamelamadingdong@dunder.com2',
     };
 
+    const eventKeys = [
+        'dateOfEvent',
+        'eventEmail',
+        'eventContact',
+        'address',
+        'charity',
+        'eventDetails',
+    ];
+
     beforeAll(async () => {
         await mongoose.connect(process.env.MONGO_URL, {
             useNewUrlParser: true,
@@ -62,12 +71,9 @@ describe('Events', () => {
             eventDetails: eventDataOne.eventDetails,
         });
 
-        expect(createdEventOne.dateOfEvent).toEqual(eventDataOne.dateOfEvent);
-        expect(createdEventOne.eventEmail).toEqual(eventDataOne.eventEmail);
-        expect(createdEventOne.eventContact).toEqual(eventDataOne.eventContact);
-        expect(createdEventOne.address).toEqual(eventDataOne.address);
-        expect(createdEventOne.charity).toEqual(eventDataOne.charity);
-        expect(createdEventOne.eventDetails).toEqual(eventDataOne.eventDetails);
+        eventKeys.forEach((key) => {
+            expect(createdEventOne[key]).toEqual(eventDataOne[key]);
+        });
     });
 
     test('should create another new event', async () => {
@@ -80,23 +86,17 @@ describe('Events', () => {
             eventDetails: eventDataTwo.eventDetails,
         });
 
-        expect(createdEventTwo.dateOfEvent).toEqual(eventDataTwo.dateOfEvent);
-        expect(createdEventTwo.eventEmail).toEqual(eventDataTwo.eventEmail);
-        expect(createdEventTwo.eventContact).toEqual(eventDataTwo.eventContact);
-        expect(createdEventTwo.address).toEqual(eventDataTwo.address);
-        expect(createdEventTwo.charity).toEqual(eventDataTwo.charity);
-        expect(createdEventTwo.eventDetails).toEqual(eventDataTwo.eventDetails);
+        eventKeys.forEach((key) => {
+            expect(createdEventTwo[key]).toEqual(eventDataTwo[key]);
+        });
     });
 
     test('should get a event by id', async () => {
         const getEventTwo = await Event.getEventById(createdEventTwo._id);
 
-        expect(getEventTwo.dateOfEvent).toEqual(eventDataTwo.dateOfEvent);
-        expect(getEventTwo.eventEmail).toEqual(eventDataTwo.eventEmail);
-        expect(getEventTwo.eventContact).toEqual(eventDataTwo.eventContact);
-        expect(getEventTwo.address).toEqual(eventDataTwo.address);
-        expect(getEventTwo.charity).toEqual(eventDataTwo.charity);
-        expect(getEventTwo.eventDetails).toEqual(eventDataTwo.eventDetails);
+        eventKeys.forEach((key) => {
+            expect(getEventTwo[key]).toEqual(eventDataTwo[key]);
+        });
     });
     test('should get many events by id', async () => {
         const manyEvents = await Event.getManyEventsById(
@@ -111,13 +111,6 @@ describe('Events', () => {
             const eventMatch = createdEvents.find(
                 (createdEvent) => createdEvent._id.equals(event._id),
             );
-
-            const eventKeys = [
-                'address',
-                'eventEmail',
-                'eventDetails',
-                'eventContact',
-            ];
 
             eventKeys.forEach((key) => {
                 expect(eventMatch[key]).toEqual(event[key]);
@@ -149,12 +142,13 @@ describe('Events', () => {
             eventEmail: 'new.eventEmail@test.com',
         });
 
-        expect(updatedEventTwo.dateOfEvent).toEqual(eventDataTwo.dateOfEvent);
-        expect(updatedEventTwo.eventEmail).toEqual('new.eventEmail@test.com');
-        expect(updatedEventTwo.eventContact).toEqual(eventDataTwo.eventContact);
-        expect(updatedEventTwo.address).toEqual(eventDataTwo.address);
-        expect(updatedEventTwo.charity).toEqual(eventDataTwo.charity);
-        expect(updatedEventTwo.eventDetails).toEqual(eventDataTwo.eventDetails);
+        eventKeys.forEach((key) => {
+            if (key !== 'eventEmail') {
+                expect(updatedEventTwo[key]).toEqual(eventDataTwo[key]);
+            } else {
+                expect(updatedEventTwo.eventEmail).toEqual('new.eventEmail@test.com');
+            }
+        });
     });
 
     test('should delete a event by id', async () => {
