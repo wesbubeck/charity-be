@@ -27,6 +27,9 @@ const typeDefs = gql`
         eventsAttended: [ID]
         eventsFavorited: [ID]
         charitiesFavorited: [ID]
+        fullEventsAttended: [Event]
+        fullEventsFavorited: [Event]
+        fullCharitiesFavorited: [Charity]
     }
     input NewEventInput {
         dateOfEvent: String!
