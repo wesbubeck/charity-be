@@ -1,4 +1,4 @@
-# charity-be
+# charity
 
 ![alt text](https://img.shields.io/github/issues/wesbubeck/charity-be "Issues Badge")
 ![alt text](https://img.shields.io/github/forks/wesbubeck/charity-be "Forks Badge")
@@ -19,7 +19,15 @@ Use the package manager [npm](https://www.npmjs.com/) to install charity-be.
 npm install
 ```
 
-## Linting: Uses eslint with modified Airbnb rules:
+### Starting Server
+
+To start the Apollo server type:
+
+```bash
+npm start
+```
+
+### Linting: Uses eslint with modified Airbnb rules:
 
 To run lint in terminal run
 
@@ -27,10 +35,83 @@ To run lint in terminal run
 npm run lint
 ```
 
-to run lint and auto fix in terminal run
+To run lint and auto fix in terminal run
 
 ```bash
 npm run lint:fix
+```
+
+## Graphql
+
+Here you can find info on Github [Apollo Server 2.x](https://github.com/apollographql/apollo-server)
+
+Here are the [docs on Apollo server](https://www.apollographql.com/docs/apollo-server/getting-started/)
+
+Here are examples to do graphql queries and mutations.
+
+### Queries
+
+#### Example Query
+
+```graphql
+query {
+  events {
+    eventContact
+    address
+    charity
+    eventDetails
+  }
+}
+```
+
+### Mutations
+
+#### Example createEvent
+
+```graphql
+mutation {
+            createEvent(
+            input:{
+              dateOfEvent: "Friday, September 18, 2020 7:00:00 PM"
+              eventContact: "Angela Smirnoff"
+              address: "1st ave New York, New York"
+              eventEmail: "angela@email.io"
+              eventDetails: "This is an event created with graphql"
+              charity: "5e08fe0c1623cb085602857b"
+            }){
+              eventDetails
+
+```
+
+#### Example updateEvent
+
+```graphql
+mutation {
+  updateEvent(
+    id: "5e250f1ba3f427985ff85c84"
+    input: {
+      dateOfEvent: "Thursday, September 17, 2020 7:00:00 PM"
+      eventContact: "Angela Smirnoff"
+      address: "1st ave New York, New York"
+      eventEmail: "angela@email.io"
+      eventDetails: "This is an event created with graphql"
+      charity: "5e08fe0c1623cb085602857b"
+    }
+  ) {
+    eventDetails
+  }
+}
+```
+
+#### Example deleteEvent
+
+```graphql
+mutation {
+  deleteEvent(id: "5e0ac8862ceb952d50309483") {
+    eventDetails
+    eventContact
+  }
+}
 ```
 
 ## Development Branches
