@@ -9,6 +9,7 @@ describe('Users', () => {
     let createdUserOne;
     let createdUserTwo;
     let createdEvent;
+    let createdEventTwo;
     let createdCharity;
     const userUpdate = {};
 
@@ -37,6 +38,15 @@ describe('Users', () => {
         eventEmail: 'beet.farmer@dunder.com',
     };
 
+    const eventDataTwo = {
+        dateOfEvent: new Date('September 6, 2006 03:24:00'),
+        eventContact: 'Nard Dog',
+        address: '123 some other street',
+        eventDetails: 'This event is connecticut caz',
+        charity: null,
+        eventEmail: 'nardz@dunder.com',
+    };
+
     beforeAll(async () => {
         await mongoose.connect(process.env.MONGO_URL, {
             useNewUrlParser: true,
@@ -50,9 +60,10 @@ describe('Users', () => {
         });
 
         eventDataOne.charity = [createdCharity._id];
+        eventDataTwo.charity = [createdCharity._id];
         userUpdate.charity = [createdCharity._id];
 
-        createdEvent = await Event.createEvent({
+        createdEventTwo = await Event.createEvent({
             dateOfEvent: eventDataOne.dateOfEvent,
             eventContact: eventDataOne.eventContact,
             eventEmail: eventDataOne.eventEmail,
@@ -60,7 +71,15 @@ describe('Users', () => {
             charity: eventDataOne.charity,
             eventDetails: eventDataOne.eventDetails,
         });
-        userUpdate.event = [createdEvent._id];
+
+        createdEvent = await Event.createEvent({
+            dateOfEvent: eventDataTwo.dateOfEvent,
+            eventContact: eventDataTwo.eventContact,
+            eventEmail: eventDataTwo.eventEmail,
+            address: eventDataTwo.address,
+            charity: eventDataTwo.charity,
+            eventDetails: eventDataTwo.eventDetails,
+        });
     });
 
     afterAll(async () => {
@@ -115,43 +134,72 @@ describe('Users', () => {
         );
     });
 
-    test('should update a user by id', async () => {
-        const updatedUserTwo = await User.updateUserById(createdUserTwo._id, {
+    test('should update a user by id with eventsAttended/Favorited', async () => {
+        const updatedUser = await User.updateUserById(createdUserTwo._id, {
             email: 'email@test.com',
             lastName: 'Scottsman',
-            eventsFavorited: userUpdate.event,
-            eventsAttended: userUpdate.event,
-            charitiesFavorited: userUpdate.charity,
+            eventsFavorited: [createdEvent._id, createdEventTwo._id],
+            eventsAttended: [createdEvent._id],
         });
 
-        expect(updatedUserTwo.firstName).toEqual(userDataTwo.firstName);
-        expect(updatedUserTwo.email).toEqual('email@test.com');
-        expect(updatedUserTwo.lastName).toEqual('Scottsman');
-        expect(updatedUserTwo.eventsAttended[0]).toEqual(userUpdate.event[0]);
-        expect(updatedUserTwo.eventsFavorited[0]).toEqual(userUpdate.event[0]);
-        expect(updatedUserTwo.charitiesFavorited[0]).toEqual(userUpdate.charity[0]);
+        expect(updatedUser.firstName).toEqual(userDataTwo.firstName);
+        expect(updatedUser.email).toEqual('email@test.com');
+        expect(updatedUser.lastName).toEqual('Scottsman');
+        expect(updatedUser.eventsAttended).toEqual(
+            expect.arrayContaining([createdEvent._id]),
+        );
+        expect(updatedUser.eventsFavorited).toEqual(
+            expect.arrayContaining([createdEvent._id, createdEventTwo._id]),
+        );
+        expect(updatedUser.eventsAttended).toHaveLength(1);
+        expect(updatedUser.eventsFavorited).toHaveLength(2);
+        expect(updatedUser.charitiesFavorited).toHaveLength(0);
+    });
+    test('should update a user by id with eventsAttended/Favorited and charities favorited and should create duplicate values', async () => {
+        const updatedUser = await User.updateUserById(createdUserTwo._id, {
+            lastName: 'ScottsmanTwo',
+            eventsFavorited: [
+                createdEvent._id,
+                createdEventTwo._id,
+                createdEvent._id,
+                createdEventTwo._id,
+                createdEvent._id,
+                createdEventTwo._id,
+            ],
+            eventsAttended: [
+                createdEvent._id,
+                createdEvent._id,
+                createdEvent._id,
+            ],
+            charitiesFavorited: [
+                createdCharity._id,
+                createdCharity._id,
+            ],
+        });
+
+        expect(updatedUser.lastName).toEqual('ScottsmanTwo');
+        expect(updatedUser.eventsAttended).toEqual(
+            expect.arrayContaining([createdEvent._id]),
+        );
+        expect(updatedUser.eventsFavorited).toEqual(
+            expect.arrayContaining([createdEvent._id, createdEventTwo._id]),
+        );
+        expect(updatedUser.charitiesFavorited).toEqual(
+            expect.arrayContaining([createdCharity._id]),
+        );
+        expect(updatedUser.eventsAttended).toHaveLength(1);
+        expect(updatedUser.eventsFavorited).toHaveLength(2);
+        expect(updatedUser.charitiesFavorited).toHaveLength(1);
     });
     test('should update a user by id', async () => {
-        const updatedUserTwo = await User.updateUserById(createdUserTwo._id, {
-            email: 'email@test.com',
-            lastName: 'Scottsman',
+        const updatedUser = await User.updateUserById(createdUserTwo._id, {
+            email: 'emailThree@test.com',
+            lastName: 'ScottsmanThree',
         });
 
-        expect(updatedUserTwo.firstName).toEqual(userDataTwo.firstName);
-        expect(updatedUserTwo.email).toEqual('email@test.com');
-        expect(updatedUserTwo.lastName).toEqual('Scottsman');
-    });
-    test('gets the correct array values to add events/charities like/attended', () => {
-        expect(User.getPushValues([], [], ['foobar'])).toEqual({
-            charitiesFavorited: { $each: ['foobar'] },
-            eventsFavorited: null,
-            eventsAttended: null,
-        });
-        expect(User.getPushValues([], ['foobar'], [])).toEqual({
-            charitiesFavorited: null,
-            eventsFavorited: { $each: ['foobar'] },
-            eventsAttended: null,
-        });
+        expect(updatedUser.firstName).toEqual(userDataTwo.firstName);
+        expect(updatedUser.email).toEqual('emailThree@test.com');
+        expect(updatedUser.lastName).toEqual('ScottsmanThree');
     });
     test('should delete a user by id', async () => {
         await User.removeUserById(createdUserTwo._id);
@@ -165,5 +213,40 @@ describe('Users', () => {
         expect(userIdsAfterDelete).toEqual(
             expect.arrayContaining([createdUserOne._id]),
         );
+    });
+});
+
+describe('getPushValue', () => {
+    test('should return an object that includes fields with array length greater than 0', () => {
+        expect(User.getPushValues(
+            [],
+            [],
+            ['id1'],
+        )).toEqual({
+            charitiesFavorited: ['id1'],
+        });
+        expect(User.getPushValues(
+            [],
+            ['id2'],
+            [],
+        )).toEqual({
+            eventsFavorited: ['id2'],
+        });
+        expect(User.getPushValues(
+            ['id3'],
+            [],
+            [],
+        )).toEqual({
+            eventsAttended: ['id3'],
+        });
+        expect(User.getPushValues(
+            ['id3'],
+            ['id2'],
+            ['id1'],
+        )).toEqual({
+            eventsAttended: ['id3'],
+            eventsFavorited: ['id2'],
+            charitiesFavorited: ['id1'],
+        });
     });
 });

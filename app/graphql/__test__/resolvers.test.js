@@ -2,6 +2,7 @@
 const {
     Query,
     Mutation,
+    User,
 } = require('../resolvers');
 
 const mockEvents = [
@@ -48,6 +49,9 @@ const mockUsers = [
         firstName: 'Lenny',
         lastName: 'Dykstra',
         email: 'juice@email.com',
+        eventsAttended: ['123abcWTB'],
+        eventsFavorited: ['123abcWTB', '789abcWTB'],
+        charitiesFavorited: ['456defJTB'],
     },
     {
         _id: '456fooHRB',
@@ -62,6 +66,9 @@ const mockDataSources = {
         eventApi: {
             getAllEvents: () => mockEvents,
             getEventById: (id) => mockEvents.find((event) => event._id === id),
+            getManyEventsById: (
+                ids,
+            ) => ids.map((id) => mockDataSources.dataSources.eventApi.getEventById(id)),
             createEvent: (event) => event,
             updateEventById: (id, eventUpdates) => {
                 const eventToUpdate = mockEvents.find((event) => event._id === id);
@@ -82,6 +89,9 @@ const mockDataSources = {
         charityApi: {
             getAllCharities: () => mockCharities,
             getCharityById: (id) => mockCharities.find((charity) => charity._id === id),
+            getManyCharitiesById: (
+                ids,
+            ) => ids.map((id) => mockDataSources.dataSources.charityApi.getCharityById(id)),
             createCharity: (charity) => charity,
             updateCharityById: (id, charityUpdates) => {
                 const charityToUpdate = mockCharities.find((charity) => charity._id === id);
@@ -238,6 +248,58 @@ describe('Mutations', () => {
                 (event) => event._id === mockCharities[0]._id,
             );
             expect(mockDeletedCharity).toEqual(deletedCharity);
+        });
+    });
+});
+
+describe('User', () => {
+    const userOne = mockDataSources.dataSources.userApi.getUserById('123fooHRB');
+    describe('fullEventsAttended', () => {
+        it('should return the events that match the passed in ids', () => {
+            const userOneFullEventsAttended = User.fullEventsAttended(
+                userOne,
+                undefined,
+                mockDataSources,
+            );
+            expect(userOneFullEventsAttended).toHaveLength(userOne.eventsAttended.length);
+            userOneFullEventsAttended.forEach((event) => {
+                const eventMatch = mockEvents.find(
+                    (mockEvent) => event._id === mockEvent._id,
+                );
+                expect(eventMatch).toEqual(event);
+            });
+        });
+    });
+    describe('fullEventsFavorited', () => {
+        it('should return the events that match the passed in ids', () => {
+            const userOneFullEventsFavorited = User.fullEventsFavorited(
+                userOne,
+                undefined,
+                mockDataSources,
+            );
+            expect(userOneFullEventsFavorited).toHaveLength(userOne.eventsFavorited.length);
+            userOneFullEventsFavorited.forEach((event) => {
+                const eventMatch = mockEvents.find(
+                    (mockEvent) => event._id === mockEvent._id,
+                );
+                expect(eventMatch).toEqual(event);
+            });
+        });
+    });
+    describe('fullCharitiesFavorited', () => {
+        it('should return the events that match the passed in ids', () => {
+            const userOneFullCharitiesFavorited = User.fullCharitiesFavorited(
+                userOne,
+                undefined,
+                mockDataSources,
+            );
+            expect(userOneFullCharitiesFavorited).toHaveLength(userOne.charitiesFavorited.length);
+            userOneFullCharitiesFavorited.forEach((charity) => {
+                const charityMatch = mockCharities.find(
+                    (mockCharity) => charity._id === mockCharity._id,
+                );
+                expect(charityMatch).toEqual(charity);
+            });
         });
     });
 });

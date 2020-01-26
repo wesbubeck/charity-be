@@ -66,6 +66,33 @@ describe('Charities', () => {
         expect(getCharityTwo.address).toEqual(charityDataTwo.address);
     });
 
+    test('should get many charities by id', async () => {
+        const manyCharities = await Charity.getManyCharitiesById(
+            [
+                createdCharityTwo._id,
+                createdCharityOne._id,
+            ],
+        );
+
+        manyCharities.forEach((charity) => {
+            const createdCharities = [createdCharityOne, createdCharityTwo];
+            const charityMatch = createdCharities.find(
+                (createdCharity) => createdCharity._id.equals(charity._id),
+            );
+
+            const charityKeys = [
+                'address',
+                'email',
+                'charityName',
+            ];
+
+            charityKeys.forEach((key) => {
+                expect(charityMatch[key]).toEqual(charity[key]);
+            });
+        });
+        expect(manyCharities).toHaveLength(2);
+    });
+
     test('should get all charities', async () => {
         const allCharities = await Charity.getAllCharities();
         const charityIds = allCharities.map((charity) => charity._id);
