@@ -54,14 +54,14 @@ Here are examples to do graphql queries and mutations.
 #### Example Query
 
 ```graphql
-query: {
-            events {
-            eventContact
-            address
-            charity
-            eventDetails
-          }
-        }
+query {
+  events {
+    eventContact
+    address
+    charity
+    eventDetails
+  }
+}
 ```
 
 ### Mutations
@@ -128,13 +128,13 @@ Unit test are in Jest . Mongoose test use jest-mongodb which is mongo in memory.
 to run test in terminal run
 
 ```bash
-npm test
+npm run test
 ```
 
 To run test in watch mode type
 
 ```bash
-npm test:watch
+npm run test:watch
 ```
 
 ## Contributing
