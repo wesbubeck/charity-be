@@ -80,9 +80,15 @@ describe('Charities', () => {
                 (createdCharity) => createdCharity._id.equals(charity._id),
             );
 
-            expect(charityMatch.address).toEqual(charity.address);
-            expect(charityMatch.email).toEqual(charity.email);
-            expect(charityMatch.charityName).toEqual(charity.charityName);
+            const charityKeys = [
+                'address',
+                'email',
+                'charityName',
+            ];
+
+            charityKeys.forEach((key) => {
+                expect(charityMatch[key]).toEqual(charity[key]);
+            });
         });
         expect(manyCharities).toHaveLength(2);
     });

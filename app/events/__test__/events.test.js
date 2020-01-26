@@ -112,10 +112,16 @@ describe('Events', () => {
                 (createdEvent) => createdEvent._id.equals(event._id),
             );
 
-            expect(eventMatch.address).toEqual(event.address);
-            expect(eventMatch.eventEmail).toEqual(event.eventEmail);
-            expect(eventMatch.eventDetails).toEqual(event.eventDetails);
-            expect(eventMatch.eventContact).toEqual(event.eventContact);
+            const eventKeys = [
+                'address',
+                'eventEmail',
+                'eventDetails',
+                'eventContact',
+            ];
+
+            eventKeys.forEach((key) => {
+                expect(eventMatch[key]).toEqual(event[key]);
+            });
         });
         expect(manyEvents).toHaveLength(2);
     });
