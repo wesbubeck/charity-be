@@ -32,13 +32,13 @@ npm start
 To run lint in terminal run
 
 ```bash
-npm lint
+npm run lint
 ```
 
 To run lint and auto fix in terminal run
 
 ```bash
-npm lint:fix
+npm run lint:fix
 ```
 
 ## Graphql
@@ -54,7 +54,7 @@ Here are examples to do graphql queries and mutations.
 #### Example Query
 
 ```graphql
-Query: {
+query: {
             events {
             eventContact
             address
@@ -70,13 +70,14 @@ Query: {
 
 ```graphql
 mutation {
-            createEvent(input:{
-                  dateOfEvent: "Friday, September 18, 2020 7:00:00 PM"
-                  eventContact: "Angela Smirnoff"
-                  address: "1st ave New York, New York"
-                  eventEmail: "angela@email.io"
-                  eventDetails: "This is an event created with graphql"
-                  charity: "5e08fe0c1623cb085602857b"
+            createEvent(
+            input:{
+              dateOfEvent: "Friday, September 18, 2020 7:00:00 PM"
+              eventContact: "Angela Smirnoff"
+              address: "1st ave New York, New York"
+              eventEmail: "angela@email.io"
+              eventDetails: "This is an event created with graphql"
+              charity: "5e08fe0c1623cb085602857b"
             }){
               eventDetails
 
