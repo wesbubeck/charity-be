@@ -13,6 +13,12 @@ describe('Users', () => {
     let createdCharity;
     const userUpdate = {};
 
+    const userKeys = [
+        'firstName',
+        'lastName',
+        'email',
+    ];
+
     const userDataOne = {
         firstName: 'Dwight',
         lastName: 'Schrute',
@@ -99,9 +105,9 @@ describe('Users', () => {
             email: userDataOne.email,
         });
 
-        expect(createdUserOne.firstName).toEqual(userDataOne.firstName);
-        expect(createdUserOne.email).toEqual(userDataOne.email);
-        expect(createdUserOne.lastName).toEqual(userDataOne.lastName);
+        userKeys.forEach((key) => {
+            expect(createdUserOne[key]).toEqual(userDataOne[key]);
+        })
     });
 
     test('should create another new user', async () => {
@@ -111,17 +117,17 @@ describe('Users', () => {
             email: userDataTwo.email,
         });
 
-        expect(createdUserTwo.firstName).toEqual(userDataTwo.firstName);
-        expect(createdUserTwo.email).toEqual(userDataTwo.email);
-        expect(createdUserTwo.lastName).toEqual(userDataTwo.lastName);
+        userKeys.forEach((key) => {
+            expect(createdUserTwo[key]).toEqual(userDataTwo[key]);
+        });
     });
 
     test('should get a user by id', async () => {
         const getUserTwo = await User.getUserById(createdUserTwo._id);
 
-        expect(getUserTwo.firstName).toEqual(userDataTwo.firstName);
-        expect(getUserTwo.email).toEqual(userDataTwo.email);
-        expect(getUserTwo.lastName).toEqual(userDataTwo.lastName);
+        userKeys.forEach((key) => {
+            expect(getUserTwo[key]).toEqual(userDataTwo[key]);
+        });
     });
 
     test('should get all users', async () => {
