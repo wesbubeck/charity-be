@@ -107,7 +107,7 @@ describe('Users', () => {
 
         userKeys.forEach((key) => {
             expect(createdUserOne[key]).toEqual(userDataOne[key]);
-        })
+        });
     });
 
     test('should create another new user', async () => {
