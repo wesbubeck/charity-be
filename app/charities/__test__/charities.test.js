@@ -17,6 +17,12 @@ describe('Charities', () => {
         charityName: 'Scotts tots',
     };
 
+    const charityKeys = [
+        'address',
+        'email',
+        'charityName',
+    ];
+
     beforeAll(async () => {
         await mongoose.connect(process.env.MONGO_URL, {
             useNewUrlParser: true,
@@ -41,9 +47,9 @@ describe('Charities', () => {
             email: charityDataOne.email,
         });
 
-        expect(createdCharityOne.charityName).toEqual(charityDataOne.charityName);
-        expect(createdCharityOne.email).toEqual(charityDataOne.email);
-        expect(createdCharityOne.address).toEqual(charityDataOne.address);
+        charityKeys.forEach((key) => {
+            expect(createdCharityOne[key]).toEqual(charityDataOne[key]);
+        });
     });
 
     test('should create another new charity', async () => {
@@ -53,17 +59,17 @@ describe('Charities', () => {
             email: charityDataTwo.email,
         });
 
-        expect(createdCharityTwo.charityName).toEqual(charityDataTwo.charityName);
-        expect(createdCharityTwo.email).toEqual(charityDataTwo.email);
-        expect(createdCharityTwo.address).toEqual(charityDataTwo.address);
+        charityKeys.forEach((key) => {
+            expect(createdCharityTwo[key]).toEqual(charityDataTwo[key]);
+        });
     });
 
     test('should get a charity by id', async () => {
         const getCharityTwo = await Charity.getCharityById(createdCharityTwo._id);
 
-        expect(getCharityTwo.charityName).toEqual(charityDataTwo.charityName);
-        expect(getCharityTwo.email).toEqual(charityDataTwo.email);
-        expect(getCharityTwo.address).toEqual(charityDataTwo.address);
+        charityKeys.forEach((key) => {
+            expect(getCharityTwo[key]).toEqual(charityDataTwo[key]);
+        });
     });
 
     test('should get many charities by id', async () => {
@@ -79,12 +85,6 @@ describe('Charities', () => {
             const charityMatch = createdCharities.find(
                 (createdCharity) => createdCharity._id.equals(charity._id),
             );
-
-            const charityKeys = [
-                'address',
-                'email',
-                'charityName',
-            ];
 
             charityKeys.forEach((key) => {
                 expect(charityMatch[key]).toEqual(charity[key]);
@@ -111,9 +111,13 @@ describe('Charities', () => {
             },
         );
 
-        expect(updatedCharityTwo.charityName).toEqual(charityDataTwo.charityName);
-        expect(updatedCharityTwo.email).toEqual('new.email@test.com');
-        expect(updatedCharityTwo.address).toEqual(charityDataTwo.address);
+        charityKeys.forEach((key) => {
+            if (key === 'email') {
+                expect(updatedCharityTwo.email).toEqual('new.email@test.com');
+            } else {
+                expect(updatedCharityTwo[key]).toEqual(charityDataTwo[key]);
+            }
+        });
     });
 
     test('should delete a charity by id', async () => {
