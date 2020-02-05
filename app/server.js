@@ -6,11 +6,13 @@ const resolvers = require('./graphql/resolvers');
 const eventApi = require('./events/event-queries');
 const charityApi = require('./charities/charity-queries');
 const userApi = require('./users/user-queries');
+const addressApi = require('./address/address-service');
 
 const dataSources = () => ({
     eventApi,
     charityApi,
     userApi,
+    addressApi,
 });
 
 const start = async () => {

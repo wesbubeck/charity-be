@@ -31,6 +31,15 @@ const typeDefs = gql`
         fullEventsFavorited: [Event]
         fullCharitiesFavorited: [Charity]
     }
+    type Address {
+        formattedAddress: String!
+        location: Location!
+        placeId: String!
+    }
+    type Location {
+        lat: String!
+        lng: String!
+    }
     input NewEventInput {
         dateOfEvent: String!
         eventContact: String!
@@ -72,6 +81,11 @@ const typeDefs = gql`
         email: String
         events: [ID]
     }
+    input AddressInput {
+        street: String!
+        city: String!
+        state: String!
+    }
     type Query {
         events: [Event]!
         event(id: ID!): Event
@@ -79,6 +93,7 @@ const typeDefs = gql`
         user(id: ID!): User
         charities: [Charity]!
         charity(id: ID!): Charity
+        address(input: AddressInput): Address!
     }
     type Mutation {
         createEvent(input: NewEventInput!): Event
