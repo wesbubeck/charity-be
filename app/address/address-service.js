@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from 'axios';
 
 const getAddress = ({ street, city, state }) => {
     const address = `${street.trim().split(' ').join('+')},+${city.trim().split(' ').join('+')},+${state.trim().split(' ').join('+')}`;
@@ -7,6 +7,8 @@ const getAddress = ({ street, city, state }) => {
     })
         .then((response) => {
             const { results } = response.data;
+            console.log('results :', results);
+            // need to decide how to handle arrays and multiple responses
             return {
                 formattedAddress: results[0].formatted_address,
                 location: results[0].geometry.location,
