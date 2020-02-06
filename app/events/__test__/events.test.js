@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 
-const mongoose = require('mongoose');
-const Event = require('../event-queries');
-const Charity = require('../../charities/charity-queries');
+import mongoose from 'mongoose';
+import Event from '../event-queries';
+import Charity from '../../charities/charity-queries';
 
 describe('Events', () => {
     let createdEventOne;

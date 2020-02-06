@@ -1,9 +1,9 @@
 /* eslint-disable no-underscore-dangle */
-const {
+import {
     Query,
     Mutation,
     User,
-} = require('../resolvers');
+} from '../resolvers';
 
 const mockEvents = [
     {

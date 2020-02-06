@@ -1,5 +1,5 @@
-const Event = require('./event-model');
-const Charity = require('../charities/charity-queries');
+import Event from './event-model';
+import Charity from '../charities/charity-queries';
 
 const createEvent = async (eventDetails) => {
     const createdEvent = await Event.create(eventDetails);

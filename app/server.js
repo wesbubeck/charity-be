@@ -1,12 +1,12 @@
-const { ApolloServer } = require('apollo-server');
-const connect = require('../connect');
-const typeDefs = require('./graphql/schema');
-const resolvers = require('./graphql/resolvers');
+import { ApolloServer } from 'apollo-server';
+import connect from '../connect';
+import typeDefs from './graphql/schema';
+import resolvers from './graphql/resolvers';
 
-const eventApi = require('./events/event-queries');
-const charityApi = require('./charities/charity-queries');
-const userApi = require('./users/user-queries');
-const addressApi = require('./address/address-service');
+import eventApi from './events/event-queries';
+import charityApi from './charities/charity-queries';
+import userApi from './users/user-queries';
+import addressApi from './address/address-service';
 
 const dataSources = () => ({
     eventApi,
