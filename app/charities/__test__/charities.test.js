@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 
-const mongoose = require('mongoose');
-const Charity = require('../charity-queries');
+import mongoose from 'mongoose';
+import Charity from '../charity-queries';
 
 describe('Charities', () => {
     let createdCharityOne;
