@@ -14,16 +14,32 @@
     "lint:fix": "npm run lint -- --fix"
   },
   "babel": {
-      "presets": [],
-      "plugins": [["transform-object-rest-spread", { "useBuiltIns": true }]]
+    "presets": [],
+    "plugins": [
+      [
+        "transform-object-rest-spread",
+        {
+          "useBuiltIns": true
+        }
+      ]
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          "transform-es2015-modules-commonjs"
+        ]
+      }
+    }
   },
   "dependencies": {
     "apollo-server": "^2.9.16",
+    "axios": "^0.19.2",
     "graphql": "^14.5.8",
     "lodash": "^4.17.15",
     "mongoose": "^5.8.2"
   },
   "devDependencies": {
+    "@babel/preset-es2015": "^7.0.0-beta.53",
     "@shelf/jest-mongodb": "^1.1.3",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -34,6 +50,7 @@
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.19.1",
     "jest": "^24.9.0",
+    "jest-mock-axios": "^3.2.0",
     "nodemon": "^2.0.2"
   }
 }

@@ -1,9 +1,9 @@
 /* eslint-disable no-underscore-dangle */
-const {
+import {
     Query,
     Mutation,
     User,
-} = require('../resolvers');
+} from '../resolvers';
 
 const mockEvents = [
     {
@@ -61,6 +61,17 @@ const mockUsers = [
     },
 ];
 
+const mockAddress = {
+    address: {
+        location: {
+            lat: '26.9747691',
+            lng: '-80.1108622',
+        },
+        formattedAddress: '111 SE River Side Rd, Tequesta, FL 33469, USA',
+        placeId: 'ChIJqU2XSc7X3ogbdbd9l9Fc0',
+    },
+};
+
 const mockDataSources = {
     dataSources: {
         eventApi: {
@@ -98,6 +109,9 @@ const mockDataSources = {
                 return Object.assign(charityToUpdate, charityUpdates);
             },
             removeCharityById: (id) => mockCharities.find((charity) => charity._id === id),
+        },
+        addressApi: {
+            getAddress: () => mockAddress,
         },
     },
 };
@@ -140,6 +154,12 @@ describe('Queries', () => {
         it('should get all charities', () => {
             const allCharities = Query.charities(null, null, mockDataSources);
             expect(allCharities).toEqual(mockCharities);
+        });
+    });
+    describe('address', () => {
+        it('should get an address', () => {
+            const address = Query.address(null, { street: '111 1st', city: 'Scranton', state: 'PA' }, mockDataSources);
+            expect(address).toEqual(mockAddress);
         });
     });
 });
