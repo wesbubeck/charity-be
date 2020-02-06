@@ -7,7 +7,6 @@ const getAddress = ({ street, city, state }) => {
     })
         .then((response) => {
             const { results } = response.data;
-            console.log('results :', results);
             // need to decide how to handle arrays and multiple responses
             return {
                 formattedAddress: results[0].formatted_address,
@@ -16,6 +15,7 @@ const getAddress = ({ street, city, state }) => {
             };
         })
         .catch((error) => {
+            // eslint-disable-next-line no-console
             console.log(error);
         });
 };
