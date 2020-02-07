@@ -71,14 +71,14 @@ query {
 ```graphql
 mutation {
   createEvent(
-  input:{
-    dateOfEvent: "Friday, September 18, 2020 7:00:00 PM"
-    eventContact: "Angela Smirnoff"
-    address: "1st ave New York, New York"
-    eventEmail: "angela@email.io"
-    eventDetails: "This is an event created with graphql"
-    charity: "5e08fe0c1623cb085602857b"
-  }){
+    input:{
+      dateOfEvent: "Friday, September 18, 2020 7:00:00 PM"
+      eventContact: "Angela Smirnoff"
+      address: "1st ave New York, New York"
+      eventEmail: "angela@email.io"
+      eventDetails: "This is an event created with graphql"
+      charity: "5e08fe0c1623cb085602857b"
+    }){
     eventDetails
   }
 }
