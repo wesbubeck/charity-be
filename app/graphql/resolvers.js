@@ -67,3 +67,4 @@ module.exports = {
         ) => dataSources.charityApi.getCharityById(event.charity),
     },
 };
+
