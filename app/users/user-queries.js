@@ -11,13 +11,23 @@ const getAllUsers = () => User.find({})
     .lean()
     .exec();
 
-const getPushValues = (eventsAttendedIdsValue, eventsFavoritedIdsValue, charitiesFavoritedIdsValue) => {
+const getPushValues = (
+    eventsAttendedIdsValue,
+    eventsFavoritedIdsValue,
+    charitiesFavoritedIdsValue,
+) => {
     const pushValue = {};
-    if (eventsAttendedIdsValue.length > 0) pushValue.eventsAttendedIds = eventsAttendedIdsValue;
+    if (eventsAttendedIdsValue.length > 0) {
+        pushValue.eventsAttendedIds = eventsAttendedIdsValue;
+    }
 
-    if (eventsFavoritedIdsValue.length > 0) pushValue.eventsFavoritedIds = eventsFavoritedIdsValue;
+    if (eventsFavoritedIdsValue.length > 0) {
+        pushValue.eventsFavoritedIds = eventsFavoritedIdsValue;
+    }
 
-    if (charitiesFavoritedIdsValue.length > 0) pushValue.charitiesFavoritedIds = charitiesFavoritedIdsValue;
+    if (charitiesFavoritedIdsValue.length > 0) {
+        pushValue.charitiesFavoritedIds = charitiesFavoritedIdsValue;
+    }
 
     return pushValue;
 };

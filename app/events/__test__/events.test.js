@@ -122,8 +122,6 @@ describe('Events', () => {
     test('charity should contain a ref to the events it is mapped to', async () => {
         const charityWithEvent = await Charity.getCharityById(createdCharity._id);
 
-        console.log('charityWithEvent :', charityWithEvent);
-
         expect(charityWithEvent.eventIds).toEqual(
             expect.arrayContaining([createdEventTwo._id, createdEventOne._id]),
         );
