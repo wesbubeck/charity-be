@@ -11,41 +11,41 @@ const getAllUsers = () => User.find({})
     .lean()
     .exec();
 
-const getPushValues = (eventsAttendedValue, eventsFavoritedValue, charitiesFavoritedValue) => {
+const getPushValues = (eventsAttendedIdsValue, eventsFavoritedIdsValue, charitiesFavoritedIdsValue) => {
     const pushValue = {};
-    if (eventsAttendedValue.length > 0) pushValue.eventsAttended = eventsAttendedValue;
+    if (eventsAttendedIdsValue.length > 0) pushValue.eventsAttendedIds = eventsAttendedIdsValue;
 
-    if (eventsFavoritedValue.length > 0) pushValue.eventsFavorited = eventsFavoritedValue;
+    if (eventsFavoritedIdsValue.length > 0) pushValue.eventsFavoritedIds = eventsFavoritedIdsValue;
 
-    if (charitiesFavoritedValue.length > 0) pushValue.charitiesFavorited = charitiesFavoritedValue;
+    if (charitiesFavoritedIdsValue.length > 0) pushValue.charitiesFavoritedIds = charitiesFavoritedIdsValue;
 
     return pushValue;
 };
 
 const updateUserById = async (id, update) => {
     let updatedUser;
-    const eventsAttendedCopy = get(update, 'eventsAttended', []);
-    const eventsFavoritedCopy = get(update, 'eventsFavorited', []);
-    const charitiesFavoritedCopy = get(update, 'charitiesFavorited', []);
+    const eventsAttendedIdsCopy = get(update, 'eventsAttendedIds', []);
+    const eventsFavoritedIdsCopy = get(update, 'eventsFavoritedIds', []);
+    const charitiesFavoritedIdsCopy = get(update, 'charitiesFavoritedIds', []);
 
     if (
-        eventsAttendedCopy.length > 0
-        || eventsFavoritedCopy.length > 0
-        || charitiesFavoritedCopy.length > 0
+        eventsAttendedIdsCopy.length > 0
+        || eventsFavoritedIdsCopy.length > 0
+        || charitiesFavoritedIdsCopy.length > 0
     ) {
         const updatedCopy = { ...update };
-        delete updatedCopy.eventsAttended;
-        delete updatedCopy.eventsFavorited;
-        delete updatedCopy.charitiesFavorited;
+        delete updatedCopy.eventsAttendedIds;
+        delete updatedCopy.eventsFavoritedIds;
+        delete updatedCopy.charitiesFavoritedIds;
 
         updatedUser = await User.findByIdAndUpdate(
             { _id: id },
             {
                 $set: updatedCopy,
                 $addToSet: getPushValues(
-                    eventsAttendedCopy,
-                    eventsFavoritedCopy,
-                    charitiesFavoritedCopy,
+                    eventsAttendedIdsCopy,
+                    eventsFavoritedIdsCopy,
+                    charitiesFavoritedIdsCopy,
                 ),
             },
             {

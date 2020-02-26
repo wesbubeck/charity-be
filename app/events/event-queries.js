@@ -3,14 +3,14 @@ import Charity from '../charities/charity-queries';
 
 const createEvent = async (eventDetails) => {
     const createdEvent = await Event.create(eventDetails);
-    const charity = await Charity.getCharityById(eventDetails.charity);
-    const charityEvents = charity.events;
+    const charity = await Charity.getCharityById(eventDetails.charityId);
+    const charityEvents = charity.eventIds;
 
     // eslint-disable-next-line no-underscore-dangle
     charityEvents.push(createdEvent._id);
 
-    await Charity.updateCharityById(eventDetails.charity, {
-        events: charityEvents,
+    await Charity.updateCharityById(eventDetails.charityId, {
+        eventIds: charityEvents,
     });
 
     return createdEvent;

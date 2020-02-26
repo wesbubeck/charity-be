@@ -14,15 +14,15 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    eventsAttended: {
+    eventsAttendedIds: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'event',
     },
-    eventsFavorited: {
+    eventsFavoritedIds: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'event',
     },
-    charitiesFavorited: {
+    charitiesFavoritedIds: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'charity',
     },

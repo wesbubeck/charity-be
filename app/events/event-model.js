@@ -21,7 +21,7 @@ const eventSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    charity: {
+    charityId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'charity',
         required: true,

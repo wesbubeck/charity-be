@@ -15,7 +15,7 @@ const charitySchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    events: {
+    eventIds: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'event',
     },

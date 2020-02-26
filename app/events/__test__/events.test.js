@@ -13,7 +13,7 @@ describe('Events', () => {
         eventContact: 'Schrute',
         address: '123 some street',
         eventDetails: 'This event is the finest beets',
-        charity: null,
+        charityId: null,
         eventEmail: 'beet.farmer@dunder.com',
     };
     const eventDataTwo = {
@@ -21,7 +21,7 @@ describe('Events', () => {
         eventContact: 'Beasley',
         address: '888 some avenue',
         eventDetails: 'This is an art show for the peeps',
-        charity: null,
+        charityId: null,
         eventEmail: 'pamelamadingdong@dunder.com2',
     };
 
@@ -30,7 +30,7 @@ describe('Events', () => {
         'eventEmail',
         'eventContact',
         'address',
-        'charity',
+        'charityId',
         'eventDetails',
     ];
 
@@ -48,8 +48,8 @@ describe('Events', () => {
             address,
             charityName,
         });
-        eventDataOne.charity = createdCharity._id;
-        eventDataTwo.charity = createdCharity._id;
+        eventDataOne.charityId = createdCharity._id;
+        eventDataTwo.charityId = createdCharity._id;
     });
 
     afterAll(async () => {
@@ -67,7 +67,7 @@ describe('Events', () => {
             eventContact: eventDataOne.eventContact,
             eventEmail: eventDataOne.eventEmail,
             address: eventDataOne.address,
-            charity: eventDataOne.charity,
+            charityId: eventDataOne.charityId,
             eventDetails: eventDataOne.eventDetails,
         });
 
@@ -82,7 +82,7 @@ describe('Events', () => {
             eventContact: eventDataTwo.eventContact,
             eventEmail: eventDataTwo.eventEmail,
             address: eventDataTwo.address,
-            charity: eventDataTwo.charity,
+            charityId: eventDataTwo.charityId,
             eventDetails: eventDataTwo.eventDetails,
         });
 
@@ -122,7 +122,9 @@ describe('Events', () => {
     test('charity should contain a ref to the events it is mapped to', async () => {
         const charityWithEvent = await Charity.getCharityById(createdCharity._id);
 
-        expect(charityWithEvent.events).toEqual(
+        console.log('charityWithEvent :', charityWithEvent);
+
+        expect(charityWithEvent.eventIds).toEqual(
             expect.arrayContaining([createdEventTwo._id, createdEventOne._id]),
         );
     });
