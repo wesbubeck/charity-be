@@ -11,6 +11,7 @@ const typeDefs = gql`
         eventEmail: String!
         eventDetails: String!
         charity: ID!
+        fullCharity: Charity
     }
     type Charity {
         _id: ID!
