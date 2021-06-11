@@ -29,7 +29,7 @@ npm start
 
 ### Linting: Uses eslint with modified Airbnb rules:
 
-To run lint in terminal run
+To run lint in terminal run .
 
 ```bash
 npm run lint
