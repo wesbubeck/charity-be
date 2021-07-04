@@ -43,20 +43,20 @@ module.exports = {
         deleteCharity: (_, { id }, { dataSources }) => dataSources.charityApi.removeCharityById(id),
     },
     User: {
-        fullEventsAttended: (
+        eventsAttended: (
             user,
             _,
             { dataSources },
-        ) => dataSources.eventApi.getManyEventsById(user.eventsAttended),
-        fullEventsFavorited: (
+        ) => dataSources.eventApi.getManyEventsById(user.eventsAttendedIds),
+        eventsFavorited: (
             user,
             _,
             { dataSources },
-        ) => dataSources.eventApi.getManyEventsById(user.eventsFavorited),
-        fullCharitiesFavorited: (
+        ) => dataSources.eventApi.getManyEventsById(user.eventsFavoritedIds),
+        charitiesFavorited: (
             user,
             _,
             { dataSources },
-        ) => dataSources.charityApi.getManyCharitiesById(user.charitiesFavorited),
+        ) => dataSources.charityApi.getManyCharitiesById(user.charitiesFavoritedIds),
     },
 };

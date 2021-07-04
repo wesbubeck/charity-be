@@ -10,26 +10,29 @@ const typeDefs = gql`
         address: String!
         eventEmail: String!
         eventDetails: String!
-        charity: ID!
+        charityId: ID!
+        charity: Charity
     }
     type Charity {
         _id: ID!
         charityName: String!
         address: String!
         email: String!
-        events: [ID]
+        eventIds: [ID]
+        events: [Event]
+
     }
     type User {
         _id: ID!
         firstName: String!
         lastName: String!
         email: String!
-        eventsAttended: [ID]
-        eventsFavorited: [ID]
-        charitiesFavorited: [ID]
-        fullEventsAttended: [Event]
-        fullEventsFavorited: [Event]
-        fullCharitiesFavorited: [Charity]
+        eventsAttendedIds: [ID]
+        eventsFavoritedIds: [ID]
+        charitiesFavoritedIds: [ID]
+        eventsAttended: [Event]
+        eventsFavorited: [Event]
+        charitiesFavorited: [Charity]
     }
     type Address {
         formattedAddress: String!
@@ -54,7 +57,7 @@ const typeDefs = gql`
         address: String
         eventEmail: String
         eventDetails: String
-        charity: ID
+        charityId: ID
     }
     input NewUserInput {
         firstName: String!
@@ -65,21 +68,21 @@ const typeDefs = gql`
         firstName: String
         lastName: String
         email: String
-        eventsAttended: [ID]
-        eventsFavorited: [ID]
-        charitiesFavorited: [ID]
+        eventsAttendedIds: [ID]
+        eventsFavoritedIds: [ID]
+        charitiesFavoritedIds: [ID]
     }
     input NewCharityInput {
         charityName: String!
         address: String!
         email: String!
-        events: [ID]
+        eventIds: [ID]
     }
     input UpdateCharityInput {
         charityName: String
         address: String
         email: String
-        events: [ID]
+        eventIds: [ID]
     }
     input AddressInput {
         street: String!

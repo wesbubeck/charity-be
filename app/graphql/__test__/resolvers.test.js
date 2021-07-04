@@ -13,7 +13,7 @@ const mockEvents = [
         address: '111 penn way Philadelphia, PA',
         eventEmail: 'kiteman@email.com',
         eventDetails: 'We are flying kites rain or shine',
-        charity: '456defJTB',
+        charityId: '456defJTB',
     },
     {
         _id: '789abcWTB',
@@ -22,7 +22,7 @@ const mockEvents = [
         address: 'The gym',
         eventEmail: 'italianstallion@email.com',
         eventDetails: 'Punching Beef',
-        charity: '123abcJTB',
+        charityId: '123abcJTB',
     },
 ];
 
@@ -32,14 +32,14 @@ const mockCharities = [
         charityName: 'Charity 1',
         address: '111 USA',
         email: 'charityone@email.com',
-        events: ['123abcWTB'],
+        eventsIds: ['123abcWTB'],
     },
     {
         _id: '456defJTB',
         charityName: 'Charity 2',
         address: '222 USA',
         email: 'charitytwo@email.com',
-        events: ['789abcWTB'],
+        eventsIds: ['789abcWTB'],
     },
 ];
 
@@ -49,9 +49,9 @@ const mockUsers = [
         firstName: 'Lenny',
         lastName: 'Dykstra',
         email: 'juice@email.com',
-        eventsAttended: ['123abcWTB'],
-        eventsFavorited: ['123abcWTB', '789abcWTB'],
-        charitiesFavorited: ['456defJTB'],
+        eventsAttendedIds: ['123abcWTB'],
+        eventsFavoritedIds: ['123abcWTB', '789abcWTB'],
+        charitiesFavoritedIds: ['456defJTB'],
     },
     {
         _id: '456fooHRB',
@@ -274,14 +274,14 @@ describe('Mutations', () => {
 
 describe('User', () => {
     const userOne = mockDataSources.dataSources.userApi.getUserById('123fooHRB');
-    describe('fullEventsAttended', () => {
+    describe('eventsAttended', () => {
         it('should return the events that match the passed in ids', () => {
-            const userOneFullEventsAttended = User.fullEventsAttended(
+            const userOneFullEventsAttended = User.eventsAttended(
                 userOne,
                 undefined,
                 mockDataSources,
             );
-            expect(userOneFullEventsAttended).toHaveLength(userOne.eventsAttended.length);
+            expect(userOneFullEventsAttended).toHaveLength(userOne.eventsAttendedIds.length);
             userOneFullEventsAttended.forEach((event) => {
                 const eventMatch = mockEvents.find(
                     (mockEvent) => event._id === mockEvent._id,
@@ -290,14 +290,14 @@ describe('User', () => {
             });
         });
     });
-    describe('fullEventsFavorited', () => {
+    describe('eventsFavorited', () => {
         it('should return the events that match the passed in ids', () => {
-            const userOneFullEventsFavorited = User.fullEventsFavorited(
+            const userOneFullEventsFavorited = User.eventsFavorited(
                 userOne,
                 undefined,
                 mockDataSources,
             );
-            expect(userOneFullEventsFavorited).toHaveLength(userOne.eventsFavorited.length);
+            expect(userOneFullEventsFavorited).toHaveLength(userOne.eventsFavoritedIds.length);
             userOneFullEventsFavorited.forEach((event) => {
                 const eventMatch = mockEvents.find(
                     (mockEvent) => event._id === mockEvent._id,
@@ -306,14 +306,16 @@ describe('User', () => {
             });
         });
     });
-    describe('fullCharitiesFavorited', () => {
+    describe('charitiesFavorited', () => {
         it('should return the events that match the passed in ids', () => {
-            const userOneFullCharitiesFavorited = User.fullCharitiesFavorited(
+            const userOneFullCharitiesFavorited = User.charitiesFavorited(
                 userOne,
                 undefined,
                 mockDataSources,
             );
-            expect(userOneFullCharitiesFavorited).toHaveLength(userOne.charitiesFavorited.length);
+            expect(userOneFullCharitiesFavorited).toHaveLength(
+                userOne.charitiesFavoritedIds.length,
+            );
             userOneFullCharitiesFavorited.forEach((charity) => {
                 const charityMatch = mockCharities.find(
                     (mockCharity) => charity._id === mockCharity._id,

@@ -40,7 +40,7 @@ describe('Users', () => {
         eventContact: 'Schrute',
         address: '123 some street',
         eventDetails: 'This event is the finest beets',
-        charity: null,
+        charityId: null,
         eventEmail: 'beet.farmer@dunder.com',
     };
 
@@ -49,7 +49,7 @@ describe('Users', () => {
         eventContact: 'Nard Dog',
         address: '123 some other street',
         eventDetails: 'This event is connecticut caz',
-        charity: null,
+        charityId: null,
         eventEmail: 'nardz@dunder.com',
     };
 
@@ -65,16 +65,16 @@ describe('Users', () => {
             email: charityDataOne.email,
         });
 
-        eventDataOne.charity = [createdCharity._id];
-        eventDataTwo.charity = [createdCharity._id];
-        userUpdate.charity = [createdCharity._id];
+        eventDataOne.charityId = [createdCharity._id];
+        eventDataTwo.charityId = [createdCharity._id];
+        userUpdate.charityId = [createdCharity._id];
 
         createdEventTwo = await Event.createEvent({
             dateOfEvent: eventDataOne.dateOfEvent,
             eventContact: eventDataOne.eventContact,
             eventEmail: eventDataOne.eventEmail,
             address: eventDataOne.address,
-            charity: eventDataOne.charity,
+            charityId: eventDataOne.charityId,
             eventDetails: eventDataOne.eventDetails,
         });
 
@@ -83,7 +83,7 @@ describe('Users', () => {
             eventContact: eventDataTwo.eventContact,
             eventEmail: eventDataTwo.eventEmail,
             address: eventDataTwo.address,
-            charity: eventDataTwo.charity,
+            charityId: eventDataTwo.charityId,
             eventDetails: eventDataTwo.eventDetails,
         });
     });
@@ -140,31 +140,31 @@ describe('Users', () => {
         );
     });
 
-    test('should update a user by id with eventsAttended/Favorited', async () => {
+    test('should update a user by id with eventsAttendedIds/Favorited', async () => {
         const updatedUser = await User.updateUserById(createdUserTwo._id, {
             email: 'email@test.com',
             lastName: 'Scottsman',
-            eventsFavorited: [createdEvent._id, createdEventTwo._id],
-            eventsAttended: [createdEvent._id],
+            eventsFavoritedIds: [createdEvent._id, createdEventTwo._id],
+            eventsAttendedIds: [createdEvent._id],
         });
 
         expect(updatedUser.firstName).toEqual(userDataTwo.firstName);
         expect(updatedUser.email).toEqual('email@test.com');
         expect(updatedUser.lastName).toEqual('Scottsman');
-        expect(updatedUser.eventsAttended).toEqual(
+        expect(updatedUser.eventsAttendedIds).toEqual(
             expect.arrayContaining([createdEvent._id]),
         );
-        expect(updatedUser.eventsFavorited).toEqual(
+        expect(updatedUser.eventsFavoritedIds).toEqual(
             expect.arrayContaining([createdEvent._id, createdEventTwo._id]),
         );
-        expect(updatedUser.eventsAttended).toHaveLength(1);
-        expect(updatedUser.eventsFavorited).toHaveLength(2);
-        expect(updatedUser.charitiesFavorited).toHaveLength(0);
+        expect(updatedUser.eventsAttendedIds).toHaveLength(1);
+        expect(updatedUser.eventsFavoritedIds).toHaveLength(2);
+        expect(updatedUser.charitiesFavoritedIds).toHaveLength(0);
     });
-    test('should update a user by id with eventsAttended/Favorited and charities favorited and should create duplicate values', async () => {
+    test('should update a user by id with eventsAttendedIds/Favorited and charities favorited and should create duplicate values', async () => {
         const updatedUser = await User.updateUserById(createdUserTwo._id, {
             lastName: 'ScottsmanTwo',
-            eventsFavorited: [
+            eventsFavoritedIds: [
                 createdEvent._id,
                 createdEventTwo._id,
                 createdEvent._id,
@@ -172,30 +172,30 @@ describe('Users', () => {
                 createdEvent._id,
                 createdEventTwo._id,
             ],
-            eventsAttended: [
+            eventsAttendedIds: [
                 createdEvent._id,
                 createdEvent._id,
                 createdEvent._id,
             ],
-            charitiesFavorited: [
+            charitiesFavoritedIds: [
                 createdCharity._id,
                 createdCharity._id,
             ],
         });
 
         expect(updatedUser.lastName).toEqual('ScottsmanTwo');
-        expect(updatedUser.eventsAttended).toEqual(
+        expect(updatedUser.eventsAttendedIds).toEqual(
             expect.arrayContaining([createdEvent._id]),
         );
-        expect(updatedUser.eventsFavorited).toEqual(
+        expect(updatedUser.eventsFavoritedIds).toEqual(
             expect.arrayContaining([createdEvent._id, createdEventTwo._id]),
         );
-        expect(updatedUser.charitiesFavorited).toEqual(
+        expect(updatedUser.charitiesFavoritedIds).toEqual(
             expect.arrayContaining([createdCharity._id]),
         );
-        expect(updatedUser.eventsAttended).toHaveLength(1);
-        expect(updatedUser.eventsFavorited).toHaveLength(2);
-        expect(updatedUser.charitiesFavorited).toHaveLength(1);
+        expect(updatedUser.eventsAttendedIds).toHaveLength(1);
+        expect(updatedUser.eventsFavoritedIds).toHaveLength(2);
+        expect(updatedUser.charitiesFavoritedIds).toHaveLength(1);
     });
     test('should update a user by id', async () => {
         const updatedUser = await User.updateUserById(createdUserTwo._id, {
@@ -229,30 +229,30 @@ describe('getPushValue', () => {
             [],
             ['id1'],
         )).toEqual({
-            charitiesFavorited: ['id1'],
+            charitiesFavoritedIds: ['id1'],
         });
         expect(User.getPushValues(
             [],
             ['id2'],
             [],
         )).toEqual({
-            eventsFavorited: ['id2'],
+            eventsFavoritedIds: ['id2'],
         });
         expect(User.getPushValues(
             ['id3'],
             [],
             [],
         )).toEqual({
-            eventsAttended: ['id3'],
+            eventsAttendedIds: ['id3'],
         });
         expect(User.getPushValues(
             ['id3'],
             ['id2'],
             ['id1'],
         )).toEqual({
-            eventsAttended: ['id3'],
-            eventsFavorited: ['id2'],
-            charitiesFavorited: ['id1'],
+            eventsAttendedIds: ['id3'],
+            eventsFavoritedIds: ['id2'],
+            charitiesFavoritedIds: ['id1'],
         });
     });
 });
