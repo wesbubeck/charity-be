@@ -59,4 +59,11 @@ module.exports = {
             { dataSources },
         ) => dataSources.charityApi.getManyCharitiesById(user.charitiesFavorited),
     },
+    Event: {
+        fullCharity: (
+            event,
+            _,
+            { dataSources },
+        ) => dataSources.charityApi.getCharityById(event.charity),
+    },
 };
